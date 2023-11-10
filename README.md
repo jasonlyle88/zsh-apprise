@@ -84,11 +84,11 @@ zstyle ':apprise:user-setting:*'    'notify-apprise-notifier'                   
 
 # A function that recieves the 6 parameters from the ZSH Execute After Command plugin and outputs the title that should be used for the notification.
 # Defaults to the notification title generation function provided with this plugin
-zstyle ':apprise:user-setting:*'    'notification-title-generation-function'    'za-generate-notification-title'
+zstyle ':apprise:user-setting:*'    'notification-title-generation-function'    'zsh-apprise-generate-notification-title'
 
 # A function that recieves the 6 parameters from the ZSH Execute After Command plugin and outputs the body that should be used for the notification.
 # Defaults to the notification body generation function provided with this plugin
-zstyle ':apprise:user-setting:*'    'notification-body-generation-function'     'za-generate-notification-body'
+zstyle ':apprise:user-setting:*'    'notification-body-generation-function'     'zsh-apprise-generate-notification-body'
 ```
 
 ## Inspiration

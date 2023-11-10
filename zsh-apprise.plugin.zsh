@@ -20,13 +20,13 @@ function () {
     zstyle ':apprise:user-setting:*'    'notify-command-ignore-regex'               ''
     zstyle ':apprise:user-setting:*'    'notify-apprise-tag'                        ''
     zstyle ':apprise:user-setting:*'    'notify-apprise-notifier'                   ''
-    zstyle ':apprise:user-setting:*'    'notification-title-generation-function'    'za-generate-notification-title'
-    zstyle ':apprise:user-setting:*'    'notification-body-generation-function'     'za-generate-notification-body'
+    zstyle ':apprise:user-setting:*'    'notification-title-generation-function'    'zsh-apprise-generate-notification-title'
+    zstyle ':apprise:user-setting:*'    'notification-body-generation-function'     'zsh-apprise-generate-notification-body'
 
     # Internal settings
     zstyle ':apprise:internal:setting:*'    'plugin-directory'  "${zshApprisePluginDirectory}"
 
-    function za-generate-notification-title() {
+    function zsh-apprise-generate-notification-title() {
         ########################################################################
         ##  Setup function variables
         ########################################################################
@@ -44,9 +44,9 @@ function () {
         ########################################################################
 
         printf '%s@%s' "${USER}" "${HOST}"
-    } # za-generate-notification-title
+    } # zsh-apprise-generate-notification-title
 
-    function za-generate-notification-body() {
+    function zsh-apprise-generate-notification-body() {
         ########################################################################
         ##  Setup function variables
         ########################################################################
@@ -85,9 +85,9 @@ function () {
 
         printf '%b (%02d:%02d:%02d)\n' "${resultEmoji}" "${executionHours}" "${executionMinutes}" "${executionSeconds}"
         printf '%s' "${commandAsTyped}"
-    } # za-generate-notification-body
+    } # zsh-apprise-generate-notification-body
 
-    function za-notify() {
+    function zsh-apprise-notify() {
 
         ########################################################################
         ##  Setup function variables
@@ -212,9 +212,9 @@ function () {
                 1>/dev/null 2>&1 &!
         fi
 
-    }
+    } # zsh-apprise-notify
 
-    zsh-execute-after-command-add-functions za-notify
+    zsh-execute-after-command-add-functions zsh-apprise-notify
 }
 
 unset zshApprisePluginDirectory
