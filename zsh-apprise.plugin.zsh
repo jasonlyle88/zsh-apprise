@@ -193,13 +193,11 @@ function () {
         ########################################################################
 
         if [[ -n "${notifyDesktopNotifier}" ]]; then
-            (
-                apprise \
-                    -t "${notificationTitle}" \
-                    -b "${notificationBody}" \
-                    "${notifyDesktopNotifier}" \
-                    1>/dev/null 2>&1 &!
-            )
+            apprise \
+                -t "${notificationTitle}" \
+                -b "${notificationBody}" \
+                "${notifyDesktopNotifier}" \
+                1>/dev/null 2>&1 &!
         fi
 
         ########################################################################
@@ -207,13 +205,11 @@ function () {
         ########################################################################
 
         if [[ -n "${notifyAppriseTag}" ]]; then
-            (
-                apprise \
-                    -t "${notificationTitle}" \
-                    -b "${notificationBody}" \
-                    --tag "${notifyAppriseTag}" \
-                    1>/dev/null 2>&1 &!
-            )
+            apprise \
+                -t "${notificationTitle}" \
+                -b "${notificationBody}" \
+                --tag "${notifyAppriseTag}" \
+                1>/dev/null 2>&1 &!
         fi
 
     }
