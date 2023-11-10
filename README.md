@@ -4,9 +4,20 @@
 
 This is a ZSH plugin that is used to send shell command completion notifications via [Apprise](https://github.com/caronc/apprise).
 
+### How to use
+Once the plugin is installed, it automatically runs by registering the notification function with the ZSH Execute After Command plugin.
+
+However, out of the box, no notifications will be sent. This is because the information about how to notify with Apprise has not been configured. See the configuration section below to learn how to configure this plugin.
+
+NOTE 1: At least one of the two configuration settings must be set in order for the plugin to send a notification:
+- notify-apprise-tag
+- notify-apprise-notifier
+
+NOTE 2: This plugin does not change any configurations for the ZSH Execute After Command plugin.
+
 ## Requirements
 - ZSH shell
-- [ZSH Execute After Command](https://github.com/jasonlyle88/zsh-apprise) Plugin
+- [ZSH Execute After Command](https://github.com/jasonlyle88/zsh-apprise) plugin
 
 ## Installation
 
@@ -71,11 +82,11 @@ zstyle ':apprise:user-setting:*'    'notify-apprise-tag'                        
 # Example: 'macosx://_/?sound=default'
 zstyle ':apprise:user-setting:*'    'notify-apprise-notifier'                   ''
 
-# A function that recieves the 6 parameters from the zsh-execute-after-command plugin and outputs the title that should be used for the notification.
+# A function that recieves the 6 parameters from the ZSH Execute After Command plugin and outputs the title that should be used for the notification.
 # Defaults to the notification title generation function provided with this plugin
 zstyle ':apprise:user-setting:*'    'notification-title-generation-function'    'za-generate-notification-title'
 
-# A function that recieves the 6 parameters from the zsh-execute-after-command plugin and outputs the body that should be used for the notification.
+# A function that recieves the 6 parameters from the ZSH Execute After Command plugin and outputs the body that should be used for the notification.
 # Defaults to the notification body generation function provided with this plugin
 zstyle ':apprise:user-setting:*'    'notification-body-generation-function'     'za-generate-notification-body'
 ```
