@@ -19,7 +19,7 @@ function () {
     zstyle ':apprise:user-setting:*'    'notify-command-minimum-seconds'            30
     zstyle ':apprise:user-setting:*'    'notify-command-ignore-regex'               ''
     zstyle ':apprise:user-setting:*'    'notify-apprise-tag'                        ''
-    zstyle ':apprise:user-setting:*'    'notify-desktop-notifier'                   ''
+    zstyle ':apprise:user-setting:*'    'notify-apprise-notifier'                   ''
     zstyle ':apprise:user-setting:*'    'notification-title-generation-function'    'za-generate-notification-title'
     zstyle ':apprise:user-setting:*'    'notification-body-generation-function'     'za-generate-notification-body'
 
@@ -108,7 +108,7 @@ function () {
         local notifyCommandMinimumSeconds
         local notifyCommandIgnoreRegex
         local notifyAppriseTag
-        local notifyDesktopNotifier
+        local notifyAppriseNotifier
         local titleGenerationFunction
         local bodyGenerationfunction
 
@@ -126,7 +126,7 @@ function () {
         zstyle -s ':apprise:user-setting:*'    'notify-command-minimum-seconds'             notifyCommandMinimumSeconds
         zstyle -s ':apprise:user-setting:*'    'notify-command-ignore-regex'                notifyCommandIgnoreRegex
         zstyle -s ':apprise:user-setting:*'    'notify-apprise-tag'                         notifyAppriseTag
-        zstyle -s ':apprise:user-setting:*'    'notify-desktop-notifier'                    notifyDesktopNotifier
+        zstyle -s ':apprise:user-setting:*'    'notify-apprise-notifier'                    notifyAppriseNotifier
         zstyle -s ':apprise:user-setting:*'    'notification-title-generation-function'     titleGenerationFunction
         zstyle -s ':apprise:user-setting:*'    'notification-body-generation-function'      bodyGenerationfunction
 
@@ -135,7 +135,7 @@ function () {
         ########################################################################
 
         # Check if there are any configured notifiers
-        if [[ -z "${notifyAppriseTag}" ]] && [[ -z "${notifyDesktopNotifier}" ]]; then
+        if [[ -z "${notifyAppriseTag}" ]] && [[ -z "${notifyAppriseNotifier}" ]]; then
             return 0
         fi
 
@@ -192,11 +192,11 @@ function () {
         ##  Send desktop notification (if configured)
         ########################################################################
 
-        if [[ -n "${notifyDesktopNotifier}" ]]; then
+        if [[ -n "${notifyAppriseNotifier}" ]]; then
             apprise \
                 -t "${notificationTitle}" \
                 -b "${notificationBody}" \
-                "${notifyDesktopNotifier}" \
+                "${notifyAppriseNotifier}" \
                 1>/dev/null 2>&1 &!
         fi
 
