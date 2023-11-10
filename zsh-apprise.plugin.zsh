@@ -14,10 +14,10 @@ function () {
     # User customizable settings
     # Commented out ZSTYLE commands are to document settings that are used but not initialized here
     zstyle ':apprise:user-setting:*'    'notify-always-on-failure'                  'yes'
-    zstyle ':apprise:user-setting:*'    'notify-only-unfocused'                     'yes'
+    zstyle ':apprise:user-setting:*'    'notify-only-unfocused'                     'no'
     zstyle ':apprise:user-setting:*'    'notify-unknown-focus'                      'yes'
     zstyle ':apprise:user-setting:*'    'notify-command-minimum-seconds'            30
-    zstyle ':apprise:user-setting:*'    'notify-command-blacklist'                  ''
+    zstyle ':apprise:user-setting:*'    'notify-command-ignore-regex'               ''
     zstyle ':apprise:user-setting:*'    'notify-apprise-tag'                        ''
     zstyle ':apprise:user-setting:*'    'notify-desktop-notifier'                   ''
     zstyle ':apprise:user-setting:*'    'notification-title-generation-function'    'za-generate-notification-title'
@@ -27,6 +27,11 @@ function () {
     zstyle ':apprise:internal:setting:*'    'plugin-directory'  "${zshApprisePluginDirectory}"
 
     function za-generate-notification-title() {
+        ########################################################################
+        ##  Setup function variables
+        ########################################################################
+
+        # Parameters
         local commandAsTyped="${1}"
         local commandAsExecutedLimited="${2}"
         local commandAsExecutedFull="${3}"
@@ -34,12 +39,19 @@ function () {
         local commandExecutionSeconds="${5}"
         local windowFocused="${6}"
 
-        printf 'My test title'
+        ########################################################################
+        ##  Output title
+        ########################################################################
 
-        # TODO
+        printf '%s@%s' "${USER}" "${HOST}"
     } # za-generate-notification-title
 
     function za-generate-notification-body() {
+        ########################################################################
+        ##  Setup function variables
+        ########################################################################
+
+        # Parameters
         local commandAsTyped="${1}"
         local commandAsExecutedLimited="${2}"
         local commandAsExecutedFull="${3}"
@@ -47,9 +59,32 @@ function () {
         local commandExecutionSeconds="${5}"
         local windowFocused="${6}"
 
-        printf 'My Test Body'
+        # Procedural variables
+        local resultEmoji
+        local executionHours
+        local executionMinutes
+        local executionSeconds
 
-        # TODO
+        ########################################################################
+        ##  Compute body parts
+        ########################################################################
+
+        if [[ "${commandExitStatus}" -eq 0 ]]; then
+            resultEmoji='\u2705'; # Green box with checkmark emoji
+        else
+            resultEmoji='\u274c'; # red cross mark emoji
+        fi
+
+        executionHours=$((commandExecutionSeconds/3600))
+        executionMinutes=$((commandExecutionSeconds%3600/60))
+        executionSeconds=$((commandExecutionSeconds%60))
+
+        ########################################################################
+        ##  Output body
+        ########################################################################
+
+        printf '%b (%02d:%02d:%02d)\n' "${resultEmoji}" "${executionHours}" "${executionMinutes}" "${executionSeconds}"
+        printf '%s' "${commandAsTyped}"
     } # za-generate-notification-body
 
     function za-notify() {
@@ -158,10 +193,13 @@ function () {
         ########################################################################
 
         if [[ -n "${notifyDesktopNotifier}" ]]; then
-            apprise \
-                -t "${notificationTitle}" \
-                -b "${notificationBody}" \
-                "${notifyDesktopNotifier}"
+            (
+                apprise \
+                    -t "${notificationTitle}" \
+                    -b "${notificationBody}" \
+                    "${notifyDesktopNotifier}" \
+                    1>/dev/null 2>&1 &!
+            )
         fi
 
         ########################################################################
@@ -169,10 +207,13 @@ function () {
         ########################################################################
 
         if [[ -n "${notifyAppriseTag}" ]]; then
-            apprise \
-                -t "${notificationTitle}" \
-                -b "${notificationBody}" \
-                --tag "${notifyAppriseTag}"
+            (
+                apprise \
+                    -t "${notificationTitle}" \
+                    -b "${notificationBody}" \
+                    --tag "${notifyAppriseTag}" \
+                    1>/dev/null 2>&1 &!
+            )
         fi
 
     }
